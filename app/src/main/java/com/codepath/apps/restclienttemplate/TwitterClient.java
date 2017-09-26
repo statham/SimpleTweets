@@ -25,6 +25,9 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_URL = "https://api.twitter.com/1.1";
 	public static final String REST_CONSUMER_KEY = "enV5cqnsLBqF3mmjpWZiPkGFE";
 	public static final String REST_CONSUMER_SECRET = "dojvuBIKdfNebnLdvdbgXLvw4fRR3B1SQDB0E5PGdVSSwXRb6J";
+    public static final int PAGE_SIZE = 25;
+
+    public int sinceId;
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -42,12 +45,17 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 	// CHANGE THIS
 	// DEFINE METHODS for different API endpoints here
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, int offset) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
+        if (offset == 0) {
+            sinceId = 1;
+        } else {
+            sinceId += offset * PAGE_SIZE;
+        }
 		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("since_id", 1);
+		params.put("count", PAGE_SIZE);
+		params.put("since_id", sinceId);
 		client.get(apiUrl, params, handler);
 	}
 
