@@ -1,5 +1,12 @@
 <resources>
 
+    <color name="tblue">#1da1f2</color>
+    <color name="twhite">#f5f8fa</color>
+    <color name="tlightgray">#e1e8ed</color>
+    <color name="tgray">#aab8c2</color>
+    <color name="tdarkgray">#657786</color>
+    <color name="tblack">#14171a</color>
+
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
@@ -9,8 +16,13 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="colorPrimary">@color/tblue</item>
+        <item name="colorPrimaryDark">@color/tdarkgray</item>
+        <item name="android:textColorHint">@color/tlightgray</item>
+        <item name="android:textColor">@color/tblack</item>
+        <item name="android:colorBackground">@color/twhite</item>
     </style>
 
 </resources>
