@@ -38,22 +38,24 @@
         android:id="@+id/ibtnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-        android:layout_alignTop="@+id/ivProfileImageCompose"
         android:layout_alignStart="@+id/etNewTweet"
-        android:onClick="onCancel"/>
+        android:layout_alignTop="@+id/ivProfileImageCompose"
+        android:background="@color/twhite"
+        android:onClick="onCancel"
+        app:srcCompat="@android:drawable/btn_dialog" />
 
     <EditText
         android:id="@+id/etNewTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnTweet"
         android:layout_alignEnd="@+id/ivProfileImageCompose"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivProfileImageCompose"
         android:layout_marginLeft="10dp"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:layout_above="@+id/btnTweet"
-        android:layout_below="@+id/ivProfileImageCompose" />
+        android:hint="@string/newTweetHint"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/btnTweet"
@@ -63,6 +65,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:text="@string/tweet"
-        android:onClick="onSubmit"/>
+        android:onClick="onSubmit"
+        android:background="@color/tblue"
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>
