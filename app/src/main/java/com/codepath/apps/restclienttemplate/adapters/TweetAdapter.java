@@ -67,7 +67,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             super(itemView);
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvUserName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvRelativeTime = (TextView) itemView.findViewById(R.id.tvRelativeTime);
         }
@@ -87,7 +87,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             String[] relativeDateParts = relativeDate.split(" ");
             for (int i = 0; i < relativeDateParts.length; i++) {
                 String word = relativeDateParts[i];
-                if (word.contains("minute")) {
+                if (word.contains("second")) {
+                    relativeTime.append("s");
+                    break;
+                } else if (word.contains("minute")) {
                     relativeTime.append("m");
                     break;
                 } else if (word.contains("hour")) {
@@ -98,8 +101,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     break;
                 } else if (word.contains("week")) {
                     relativeTime.append("w");
+                    break;
                 } else if (word.contains("year")) {
                     relativeTime.append("y");
+                    break;
                 }
                 relativeTime.append(word);
             }
