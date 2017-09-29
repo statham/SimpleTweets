@@ -42,7 +42,8 @@
         android:layout_alignTop="@+id/ivProfileImageCompose"
         android:background="@color/twhite"
         android:onClick="onCancel"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/x_mark" />
 
     <EditText
         android:id="@+id/etNewTweet"

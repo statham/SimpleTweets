@@ -20,7 +20,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="colorPrimary">@color/tblue</item>
         <item name="colorPrimaryDark">@color/tdarkgray</item>
-        <item name="android:textColorHint">@color/tlightgray</item>
+        <item name="android:textColorHint">@color/tgray</item>
         <item name="android:textColor">@color/tblack</item>
         <item name="android:colorBackground">@color/twhite</item>
     </style>

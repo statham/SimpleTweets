@@ -49,7 +49,7 @@ public class TimelineActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.twitter_logo);
+        getSupportActionBar().setLogo(R.drawable.twitter_logo_2);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         client = TwitterApplication.getRestClient();
