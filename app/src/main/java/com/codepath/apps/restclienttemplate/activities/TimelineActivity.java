@@ -65,7 +65,7 @@ public class TimelineActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                populateTimeline(page);
+                populateTimeline(tweets.get(totalItemsCount - 2).getUid());
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
@@ -102,7 +102,7 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    private void populateTimeline(int offset) {
+    private void populateTimeline(long maxId) {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
 
             @Override
@@ -140,7 +140,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
             }
-        }, offset);
+        }, maxId);
     }
 
     public void launchComposeActivity() {
