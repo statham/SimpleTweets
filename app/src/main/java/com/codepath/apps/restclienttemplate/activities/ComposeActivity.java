@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ public class ComposeActivity extends AppCompatActivity {
     TextView tvName;
     ImageView ivProfileImage;
     EditText etNewTweet;
+    TextView tvCharacterCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +53,31 @@ public class ComposeActivity extends AppCompatActivity {
         tvName = (TextView) findViewById(R.id.tvName);
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImageCompose);
         etNewTweet = (EditText) findViewById(R.id.etNewTweet);
+        tvCharacterCount = (TextView) findViewById(R.id.tvCharacterCount);
+
+        etNewTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvCharacterCount.setText(getCharacterCount(s.toString().length()));
+            }
+        });
 
         User user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
         tvScreenName.setText(user.screenName);
         tvName.setText(user.name);
         Glide.with(getApplicationContext()).load(user.profileImageUrl).into(ivProfileImage);
+        tvCharacterCount.setText(getCharacterCount(0));
     }
 
     public void onCancel(View view) {
@@ -67,6 +89,10 @@ public class ComposeActivity extends AppCompatActivity {
     public void onSubmit(View view) {
         postTweet();
 
+    }
+
+    public String getCharacterCount(int etCharacterCount) {
+        return Integer.toString(140 - etCharacterCount);
     }
 
     public void postTweet() {

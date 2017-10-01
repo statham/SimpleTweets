@@ -58,7 +58,8 @@
         android:hint="@string/newTweetHint"
         android:inputType="textMultiLine"
         android:textAlignment="textEnd"
-        android:gravity="top"/>
+        android:gravity="top"
+        android:maxLength="140"/>
 
     <Button
         android:id="@+id/btnTweet"
@@ -71,5 +72,18 @@
         android:onClick="onSubmit"
         android:background="@color/tblue"
         android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/tvCharacterCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnTweet"
+        android:layout_alignBottom="@+id/btnTweet"
+        android:layout_marginRight="15dp"
+        android:layout_toStartOf="@+id/btnTweet"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textColor="@color/tdarkgray"
+        tools:text="140" />
 
 </RelativeLayout>
