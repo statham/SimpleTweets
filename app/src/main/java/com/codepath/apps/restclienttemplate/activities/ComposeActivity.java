@@ -29,7 +29,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     private TwitterClient client;
 
-    TextView tvScreenName;
+    TextView tvScreenNameCompose;
     TextView tvName;
     ImageView ivProfileImage;
     EditText etNewTweet;
@@ -49,7 +49,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         client = TwitterApplication.getRestClient();
 
-        tvScreenName = (TextView) findViewById(R.id.tvScreenName);
+        tvScreenNameCompose = (TextView) findViewById(R.id.tvScreenNameCompose);
         tvName = (TextView) findViewById(R.id.tvName);
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImageCompose);
         etNewTweet = (EditText) findViewById(R.id.etNewTweet);
@@ -74,7 +74,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         User user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
-        tvScreenName.setText(user.screenName);
+        tvScreenNameCompose.setText(user.screenName);
         tvName.setText(user.name);
         Glide.with(getApplicationContext()).load(user.profileImageUrl).into(ivProfileImage);
         tvCharacterCount.setText(getCharacterCount(0));

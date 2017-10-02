@@ -27,12 +27,12 @@
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
     <TextView
-        android:id="@+id/tvScreenName"
+        android:id="@+id/tvScreenNameCompose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_alignEnd="@+id/tvName"
         android:layout_below="@+id/tvName"
-        android:layout_alignEnd="@+id/tvName" />
+        android:text="TextView" />
 
     <ImageButton
         android:id="@+id/ibtnCancel"
