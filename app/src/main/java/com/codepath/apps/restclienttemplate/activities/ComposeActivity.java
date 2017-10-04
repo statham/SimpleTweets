@@ -72,12 +72,25 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
-        User user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
+        tvCharacterCount.setText(getCharacterCount(0));
 
+        client.getUserInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    User user = User.fromJSON(response);
+                    populateUserInfo(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void populateUserInfo(User user) {
         tvScreenNameCompose.setText(user.screenName);
         tvName.setText(user.name);
         Glide.with(getApplicationContext()).load(user.profileImageUrl).into(ivProfileImage);
-        tvCharacterCount.setText(getCharacterCount(0));
     }
 
     public void onCancel(View view) {
@@ -88,7 +101,6 @@ public class ComposeActivity extends AppCompatActivity {
 
     public void onSubmit(View view) {
         postTweet();
-
     }
 
     public String getCharacterCount(int etCharacterCount) {

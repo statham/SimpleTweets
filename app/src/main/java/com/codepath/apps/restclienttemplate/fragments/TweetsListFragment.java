@@ -70,6 +70,12 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         }
     }
 
+    public void addItemToTop(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetAdapter.notifyItemInserted(0);
+        rvTweets.smoothScrollToPosition(0);
+    }
+
     @Override
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);

@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,17 +12,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.apps.restclienttemplate.models.User;
 
 import org.parceler.Parcels;
 
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
     private final int REQUEST_CODE = 20;
-
-    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
-//        getCurrentUser();
     }
 
     @Override
@@ -63,15 +61,16 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-//            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
-//            tweets.add(0, tweet);
-//            tweetAdapter.notifyItemInserted(0);
-//            rvTweets.smoothScrollToPosition(0);
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+            HomeTimelineFragment homeTimelineFragment = HomeTimelineFragment.newInstance(tweet);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(homeTimelineFragment, "HomeTimelineFragment");
+            ft.commit();
+        }
+    }
 
     @Override
     public void onTweetSelected(Tweet tweet) {
@@ -80,7 +79,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
     public void launchComposeActivity() {
         Intent intent = new Intent(this, ComposeActivity.class);
-        intent.putExtra("user", Parcels.wrap(currentUser));
         startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -88,22 +86,4 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
-
-//    public void getCurrentUser() {
-//        client.verifyCredentials(new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                try {
-//                    currentUser = User.fromJSON(response);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
-//            }
-//        });
-//    }
 }
