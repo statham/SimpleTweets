@@ -53,6 +53,8 @@ public class TimelineActivity extends AppCompatActivity {
             case R.id.miCompose:
                 launchComposeActivity();
                 return true;
+            case R.id.miProfile:
+                launchProfileActivity();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -72,6 +74,11 @@ public class TimelineActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ComposeActivity.class);
         intent.putExtra("user", Parcels.wrap(currentUser));
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    public void launchProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 
 //    public void getCurrentUser() {
