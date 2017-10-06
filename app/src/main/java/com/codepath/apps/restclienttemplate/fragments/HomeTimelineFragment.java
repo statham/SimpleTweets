@@ -6,12 +6,10 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
-import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -22,28 +20,16 @@ import cz.msebera.android.httpclient.Header;
 public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
 
-    public static HomeTimelineFragment newInstance(Tweet tweet) {
-        HomeTimelineFragment homeTimelineFragment = new HomeTimelineFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("tweet", Parcels.wrap(tweet));
-        homeTimelineFragment.setArguments(args);
-        return homeTimelineFragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-        populateTimeline(0);
-        if (getArguments() != null) {
-            Tweet tweet = getArguments().getParcelable("tweet");
-            addItemToTop(tweet);
-            getArguments().remove("tweet");
-        }
+        populateTimelineWithOlderTweets(0L);
     }
 
-    private void populateTimeline(long maxId) {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    @Override
+    public void populateTimelineWithOlderTweets(Long tweetId) {
+        client.getHomeTimeline(tweetId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -72,6 +58,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
             }
-        }, maxId);
+        });
     }
 }

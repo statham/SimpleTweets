@@ -44,34 +44,43 @@ public class TwitterClient extends OAuthBaseClient {
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
 
-	public void getHomeTimeline(AsyncHttpResponseHandler handler, long maxId) {
+	public void getHomeTimeline(long oldestTweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", PAGE_SIZE);
-		if (maxId == 0) {
+		if (oldestTweetId == 0) {
 			params.put("since_id", 1);
 		} else {
-			params.put("max_id", maxId);
+			params.put("max_id", oldestTweetId);
 		}
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+	public void getMentionsTimeline(long oldestTweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", PAGE_SIZE);
-		params.put("since_id", 1);
+		if (oldestTweetId == 0) {
+			params.put("since_id", 1);
+		} else {
+			params.put("max_id", oldestTweetId);
+		}
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(String screenName, long oldestTweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", PAGE_SIZE);
         params.put("screen_name", screenName);
+		if (oldestTweetId == 0) {
+			params.put("since_id", 1);
+		} else {
+			params.put("max_id", oldestTweetId);
+		}
 		client.get(apiUrl, params, handler);
 	}
 

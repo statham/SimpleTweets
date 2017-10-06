@@ -1,7 +1,9 @@
 package com.codepath.apps.restclienttemplate.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,19 +13,24 @@ import android.view.ViewGroup;
 
 import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.activities.ComposeActivity;
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by kystatham on 10/3/17.
  */
 
-public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
+public abstract class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
+    private final int REQUEST_CODE = 20;
 
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
@@ -39,6 +46,15 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragments_tweets_list, container, false);
+
+        FloatingActionButton fabCompose = (FloatingActionButton) v.findViewById(R.id.fabCompose);
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchComposeActivity(v);
+            }
+        });
+
         rvTweets = (RecyclerView) v.findViewById(R.id.rvTweet);
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(tweets, this);
@@ -50,12 +66,24 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                populateTimeline(tweets.get(totalItemsCount - 2).getUid());
+                populateTimelineWithOlderTweets(getOldestTweetId());
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+            if (tweet != null) {
+                tweets.add(0, tweet);
+                tweetAdapter.notifyItemInserted(0);
+                rvTweets.scrollToPosition(0);
+            }
+        }
     }
 
     public void addItems(JSONArray response) {
@@ -70,15 +98,25 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         }
     }
 
-    public void addItemToTop(Tweet tweet) {
-        tweets.add(0, tweet);
-        tweetAdapter.notifyItemInserted(0);
-        rvTweets.smoothScrollToPosition(0);
+    public void launchComposeActivity(View view) {
+        Intent intent = new Intent(view.getContext(), ComposeActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
+    }
+
+    public abstract void populateTimelineWithOlderTweets(Long tweetId);
+
+    private Long getOldestTweetId() {
+        if (tweets.size() == 0) {
+            return 1L;
+        } else {
+            Tweet tweet = tweets.get(tweets.size() - 1);
+            return tweet.getUid();
+        }
     }
 }
