@@ -43,18 +43,34 @@ public class ProfileActivity extends AppCompatActivity {
         ft.commit();
 
         client = TwitterApplication.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    User user = User.fromJSON(response);
-                    getSupportActionBar().setTitle(user.screenName);
-                    populateUserHeadline(user);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+        if (screenName == null) {
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        User user = User.fromJSON(response);
+                        getSupportActionBar().setTitle(user.screenName);
+                        populateUserHeadline(user);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            client.getUser(screenName, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        User user = User.fromJSON(response);
+                        getSupportActionBar().setTitle(user.screenName);
+                        populateUserHeadline(user);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     public void populateUserHeadline(User user) {

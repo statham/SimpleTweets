@@ -39,9 +39,9 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
 
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
+        public void onProfileImageSelected(String screenName);
     }
 
-    // inflation happens inside onCreateView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,6 +107,11 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
+    }
+
+    @Override
+    public void onProfileImageSelected(String screenName) {
+        ((TweetSelectedListener) getActivity()).onProfileImageSelected(screenName);
     }
 
     public abstract void populateTimelineWithOlderTweets(Long tweetId);
