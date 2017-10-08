@@ -40,6 +40,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
         public void onProfileImageSelected(String screenName);
+        public void onScreenNameSelected(String screenName);
     }
 
     @Nullable
@@ -112,6 +113,11 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     @Override
     public void onProfileImageSelected(String screenName) {
         ((TweetSelectedListener) getActivity()).onProfileImageSelected(screenName);
+    }
+
+    @Override
+    public void onScreenNameSelected(String screenName) {
+        ((TweetSelectedListener) getActivity()).onScreenNameSelected(screenName);
     }
 
     public abstract void populateTimelineWithOlderTweets(Long tweetId);

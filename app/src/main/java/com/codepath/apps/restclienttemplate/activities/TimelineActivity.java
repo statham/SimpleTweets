@@ -54,6 +54,11 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         launchProfileForUserActivity(screenName);
     }
 
+    @Override
+    public void onScreenNameSelected(String screenName) {
+        launchProfileForUserActivity(screenName);
+    }
+
     public void launchProfileActivity(MenuItem item) {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
